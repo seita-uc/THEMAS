@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "chart.js": "^2.7.3",
+    "chartjs": "^0.3.24",
+    "evernote": "^2.0.5",
+    "feedparser": "^2.2.9",
+    "giojs": "^2.0.0",
+    "oauth": "^0.9.15",
+    "request": "^2.88.0",
+    "websocket": "^1.0.28"
+  }
+}
