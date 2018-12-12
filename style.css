@@ -1,0 +1,15 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#grid {
+	width: 900px;
+}
+
+svg {
+	margin: 5px;
+	float: left;
+	list-style: none;
+}
+

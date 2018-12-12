@@ -1,4 +1,4 @@
-const langs = {
+export const langs = {
   'en': ['English', 'ws://wikimon.hatnote.com:9000'],
   'de': ['German', 'ws://wikimon.hatnote.com:9010'],
   'ru': ['Russian', 'ws://wikimon.hatnote.com:9020'],
@@ -51,7 +51,7 @@ for(let lang in langs) {
 
 export var modCount = modificationCount
 
-export function subscribe(lang, count) {
+export function subscribe(lang, count, action) {
   const socket = new WebSocket(langs[lang][1]);
 
   socket.addEventListener('open', function (event) {
@@ -61,13 +61,36 @@ export function subscribe(lang, count) {
   socket.addEventListener('message', function (event) {
     //console.log('Message from server in ' + lang + ': ' + event.data);
     count[lang]++
+    action()
   });
 }
 
-export function getModificationCount(lang) {
-  subscribe(lang);
+class LangListener {
 
-  console.log(modificationCount[lang])
-  return modificationCount[lang]
+  constructor(language, color, count) {
+    this.language = language;
+    this.color = color;
+    this.count = count;
+    this.socket = new WebSocket(langs[language][1]);
+  }
+
+  subscribe() {
+    this.socket.addEventListener('open', function (event) {
+      this.socket.send('Hello Server!');
+    });
+
+    this.socket.addEventListener('message', function (event) {
+      console.log('Message from server in ' + lang + ': ' + event.data);
+      this.count[lang]++
+      action()
+    });
+  }
 }
+
+//export function getModificationCount(lang) {
+  //subscribe(lang);
+
+  //console.log(modificationCount[lang])
+  //return modificationCount[lang]
+//}
 

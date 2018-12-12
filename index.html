@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Pie Chart</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <source src="sound/heartbeat.mp3" type="audio/mp3">
+    <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="script.js" type="module"></script>
+    <script type="module">
+      $(window).on('load resize', function(){
+        var w = $(window).width() * 1.05;
+        var h = $(window).height() * 1.05;
+        $('#grid').attr('width', w);
+        $('#grid').attr('width', h);
+      });
+    </script>
+  </head>
+
+  <body>
+    <!--<div id="canvas-holder" style="width:40%">-->
+    <!--<canvas id="chart-area"></canvas>-->
+    <!--</div>-->
+    <div id="grid">
+      <div id="heartcontainer">
+      </div>
+    </div>
+  </body>
+
+</html>
