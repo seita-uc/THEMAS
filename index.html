@@ -1,11 +1,14 @@
 <!doctype html>
 <html>
   <head>
-    <title>Pie Chart</title>
+    <title>Heartbeat of language</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <source src="sound/heartbeat.mp3" type="audio/mp3">
+    <audio id="heartbeat" preload="auto">
+      <source src="sound/heartbeat.mp3" type="audio/mp3" muted="muted">
+    </audio>
     <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.2.1/buzz.min.js"></script>
     <script src="script.js" type="module"></script>
     <script type="module">
       $(window).on('load resize', function(){
@@ -14,16 +17,24 @@
         $('#grid').attr('width', w);
         $('#grid').attr('width', h);
       });
+
+      (function (window, $) {
+        'use strict';
+        $.fn.useSound = function (_event, _id) {
+          var se = $(_id);
+          this.on(_event, function(){
+            se[0].play();
+          });
+          return this;
+        };
+      })(this, jQuery);
+
+      $('#grid').useSound('onpageshow', '#heartbeat');
     </script>
   </head>
 
   <body>
-    <!--<div id="canvas-holder" style="width:40%">-->
-    <!--<canvas id="chart-area"></canvas>-->
-    <!--</div>-->
     <div id="grid">
-      <div id="heartcontainer">
-      </div>
     </div>
   </body>
 

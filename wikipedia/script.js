@@ -1,4 +1,4 @@
-export const langs = {
+export var langs = {
   'en': ['English', 'ws://wikimon.hatnote.com:9000'],
   'de': ['German', 'ws://wikimon.hatnote.com:9010'],
   'ru': ['Russian', 'ws://wikimon.hatnote.com:9020'],

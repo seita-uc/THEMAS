@@ -68,10 +68,9 @@ class LangListener {
     this.mute = true;
     this.beating = false;
     this.heart = svg.append('circle')
-      .attr('id', 'heart-' + language)
       .attr('transform', 'translate(' + width/2 + ', ' + height/2 + ')')
       .style('opacity', 0.1)
-      .attr("r", 80)
+      .attr("r", 30)
       .attr("stroke", 'none')
       .attr('fill', 'black')
       //.transition()
@@ -83,22 +82,6 @@ class LangListener {
 
   subscribe() {
     var self = this
-    const stop = setInterval(() => {
-      var opacity = $('#heart-' + self.language).css('opacity')
-      if(self.beating) {
-        if (parseFloat(opacity) > 0.1) {
-          self.heart
-            .transition()
-            .duration(1000)
-            .style('opacity', parseFloat(opacity) - 0.2)
-        }
-      } else {
-        self.heart
-          .transition()
-          .duration(1000)
-          .style('opacity', parseFloat(opacity) + 0.1)
-      }
-    }, 3000);
 
     $('#' + self.language).mouseout(function (event) {
       self.mute = true;
@@ -124,7 +107,6 @@ class LangListener {
   }
 
   renderCircle(csize) {
-    var self = this;
     let size = Math.abs(csize);
     if(size > 100) {
       size = 100;
@@ -146,19 +128,13 @@ class LangListener {
       .style('opacity', 0.1)
       .ease(Math.sqrt)
       .duration(2500)
-      .remove()
-      .on("end", () => {
-        self.beating = false;
-      });
+      .remove();
 
     circle_group.append('text')
       .text(langs[this.language][0])
       .attr('fill', this.color)
       .classed('article-label', true)
-      .attr('text-anchor', 'middle')
-      .transition()
-      .duration(2500)
-      .remove();
+      .attr('text-anchor', 'middle');
   }
 }
 
