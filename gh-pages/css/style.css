@@ -1,0 +1,20 @@
+@charset "utf-8";()
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+div {
+  text-align: center;
+	margin: auto;
+  /*margin-left: 80px;*/
+}
+
+svg {
+	margin: 5px;
+	float: left;
+  display: inline-block;
+  text-align: center;
+}
+

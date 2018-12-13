@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Heartbeat of language</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <audio id="heartbeat" preload="auto">
+      <source src="sound/heartbeat.mp3" type="audio/mp3" muted="muted">
+    </audio>
+    <meta charset="utf-8">
+    <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.2.1/buzz.min.js"></script>
+    <script src="js/bundle.js" type="module"></script>
+    <script type="module">
+      $(window).on('load resize', function(){
+        var w = $(window).width() * 1.05;
+        var h = $(window).height() * 1.05;
+        $('#grid').attr('width', w);
+        $('#grid').attr('width', h);
+      });
+
+      (function (window, $) {
+        'use strict';
+        $.fn.useSound = function (_event, _id) {
+          var se = $(_id);
+          this.on(_event, function(){
+            se[0].play();
+          });
+          return this;
+        };
+      })(this, jQuery);
+
+      $('#grid').useSound('onpageshow', '#heartbeat');
+    </script>
+  </head>
+
+  <body>
+    <div id="svg-wrapper">
+    </div>
+  </body>
+
+</html>
