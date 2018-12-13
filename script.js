@@ -2,7 +2,7 @@ import { langs, modCount, subscribe } from './wikipedia/script.js';
 
 var w = window.innerWidth;
 var h = window.innerHeight;
-var grid = d3.select("#grid")
+var grid = d3.select("#svg-wrapper")
   .attr("width", w)
   .attr("height", h);
 
@@ -16,7 +16,7 @@ const sound = new buzz.sound("./sound/heartbeat", {
 var svgs = {}
 
 for(let lang in langs) {
-  let svg = d3.select("#grid")
+  let svg = d3.select("#svg-wrapper")
     .append("svg")
     .attr("id", lang)
     .attr("width", width)
@@ -40,7 +40,7 @@ for(let lang in langs) {
   //.attr("fill", "lightblue");
 
 //size = Math.max(Math.sqrt(abs_size) * scale_factor, 3);
-var starting_opacity = 1
+var starting_opacity = 0.7
 
 function randomColor() {
   let colors = [
@@ -59,7 +59,7 @@ function randomColor() {
 }
 
 class LangListener {
-
+ 
   constructor(svg, language, color) {
     this.svg = svg;
     this.language = language;
@@ -67,36 +67,47 @@ class LangListener {
     this.socket = new WebSocket(langs[language][1]);
     this.mute = true;
     this.beating = false;
+    this.colorScale = 0.1;
+ 
     this.heart = svg.append('circle')
       .attr('id', 'heart-' + language)
       .attr('transform', 'translate(' + width/2 + ', ' + height/2 + ')')
       .style('opacity', 0.1)
       .attr("r", 80)
       .attr("stroke", 'none')
-      .attr('fill', 'black')
-      //.transition()
-      //.attr('r', 30)
-      //.style('opacity', 1)
-      //.ease(Math.sqrt)
-      //.duration(5000)
+      .attr('fill', d3.interpolateLab(color, "black")(this.colorScale));
   }
 
   subscribe() {
-    var self = this
+    let self = this
+    let opacity = $('#heart-' + self.language).css('opacity')
     const stop = setInterval(() => {
-      var opacity = $('#heart-' + self.language).css('opacity')
       if(self.beating) {
-        if (parseFloat(opacity) > 0.1) {
+        if (self.colorScale > 0.1) {
+          let previousColor = self.colorScale;
+          self.colorScale = previousColor - 0.1;
+          let previousOpacity = parseFloat(opacity);
+          opacity = previousOpacity - 0.1;
+          if (opacity < 0.1) {
+            opacity = 0.1;
+          };
           self.heart
             .transition()
             .duration(1000)
-            .style('opacity', parseFloat(opacity) - 0.2)
+            .attr('fill', d3.interpolateLab(self.color, "black")(self.colorScale))
+            .style('opacity', opacity);
         }
       } else {
+        let previousColor = self.colorScale;
+        self.colorScale = previousColor + 0.1;
+        if (self.colorScale >= 1) {
+          self.colorScale = 0.9;
+        } 
         self.heart
           .transition()
           .duration(1000)
-          .style('opacity', parseFloat(opacity) + 0.1)
+          .attr('fill', d3.interpolateLab(self.color, "black")(self.colorScale))
+          .style('opacity', parseFloat(opacity) + 0.1);
       }
     }, 3000);
 
@@ -105,7 +116,6 @@ class LangListener {
     })
 
     $('#' + self.language).mouseover(function (event) {
-      console.log('hoge')
       self.mute = false;
     })
 
@@ -119,8 +129,10 @@ class LangListener {
       if (!self.mute) {
         sound.play();
       }
+      self.beat()
       self.renderCircle(change_size);
     });
+    self.beat()
   }
 
   renderCircle(csize) {
@@ -144,7 +156,7 @@ class LangListener {
       .transition()
       .attr('r', size + 40)
       .style('opacity', 0.1)
-      .ease(Math.sqrt)
+      .ease(d3.easeSin)
       .duration(2500)
       .remove()
       .on("end", () => {
@@ -159,6 +171,59 @@ class LangListener {
       .transition()
       .duration(2500)
       .remove();
+  }
+
+  beat() {
+    let self = this;
+    let beating = false;
+
+    //var colorScale = d3.scaleLinear()
+    //  .domain([BEAT_TIME, (MAX_LATENCY - BEAT_TIME) / 2, MAX_LATENCY])
+    //  .range(["#6D9521", "#D77900", "#CD3333"]);
+
+    var radiusScale = d3.scaleLinear()
+      .range([35, 80])
+      .domain([60000, 1000]);
+
+    if (beating) return;
+    beating = true;
+
+    //if (data.length > 0 && data[data.length - 1].date > now) {
+      //data.splice(data.length - 1, 1);
+    //}
+
+    //data.push({
+      //date: now,
+      //value: 0
+    //});
+
+    let heartTransition = this.heart
+      .transition()
+      .duration(300)
+      .attr("r", 80)
+
+    //const stop = setInterval(() => {
+    //  if (self.lastBeat === 0) {
+    //    self.lastBeat = new Date().getTime();
+    //  } else {
+    //    const currentTime = new Date().getTime();
+    //    const diff = currentTime - self.lastBeat
+    //    self.lastBeat = currentTime;
+
+    //    if(diff < 10000 || diff > 20000) {
+    //      clearInterval(stop);
+    //    } else if (diff < 20000) {
+    //      console.log(radiusScale(diff))
+    //      heartTransition = this.heart
+    //        .transition()
+    //        .duration(100)
+    //        .attr("r", radiusScale(diff));
+    //    } else {
+    //      clearInterval(stop);
+    //    }
+    //  };
+    //}, 100);
+
   }
 }
 
@@ -178,17 +243,3 @@ Chinese.subscribe();
 French.subscribe();
 Arabic.subscribe();
 
-//var circle_container = circle_group.append('a')
-//.attr('xlink:href', "hoge")
-//.attr('target', '_blank')
-//.attr('fill', "black");
-
-//var circle = circle_container.append('circle')
-//.attr('r', size)
-//.transition()
-//.duration(2000)
-//.style('opacity', 0)
-//.remove();
-//.each('end', function() {
-//  circle_group.remove();
-//})

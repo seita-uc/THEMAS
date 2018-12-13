@@ -51,44 +51,39 @@
 					.domain([BEAT_TIME, (MAX_LATENCY - BEAT_TIME) / 2, MAX_LATENCY])
 					.range(["#6D9521", "#D77900", "#CD3333"]);
 
-//			var radiusScale = d3.scale.linear()
-//					.range([5, CIRCLE_FULL_RADIUS])
-//					.domain([MAX_LATENCY, BEAT_TIME]);
+			var radiusScale = d3.scale.linear()
+					.range([5, CIRCLE_FULL_RADIUS])
+					.domain([MAX_LATENCY, BEAT_TIME]);
 
-      var radiusScale = d3.scale.linear()
-        .range([5, 40])
-        .domain([5000, 400]);
+			function beat() {
 
+				if (insideBeat) return;
+				insideBeat = true;
 
-      function beat() {
+				var now = new Date();
+				var nowTime = now.getTime();
 
-        if (insideBeat) return;
-        insideBeat = true;
+				if (data.length > 0 && data[data.length - 1].date > now) {
+					data.splice(data.length - 1, 1);
+				}
 
-        var now = new Date();
-        var nowTime = now.getTime();
+				data.push({
+					date: now,
+					value: 0
+				});
 
-        if (data.length > 0 && data[data.length - 1].date > now) {
-          data.splice(data.length - 1, 1);
-        }
-
-        data.push({
-          date: now,
-          value: 0
-        });
-
-        var step = BEAT_TIME / BEAT_VALUES.length - 2;
-        for (var i = 1; i < BEAT_VALUES.length; i++) {
-          data.push({
-            date: new Date(nowTime + i * step),
-            value: BEAT_VALUES[i]
-          });
-        }
+				var step = BEAT_TIME / BEAT_VALUES.length - 2;
+				for (var i = 1; i < BEAT_VALUES.length; i++) {
+					data.push({
+						date: new Date(nowTime + i * step),
+						value: BEAT_VALUES[i]
+					});
+				}
 
 				latestBeat = now;
 
 				circleTransition = circle.transition()
-						.duration(400)
+						.duration(BEAT_TIME)
 						.attr("r", CIRCLE_FULL_RADIUS)
 						.attr("fill", "#6D9521");
 
@@ -224,18 +219,17 @@
 				if (circleTransition != null) {
 
 					var diff = now.getTime() - latestBeat.getTime();
-          console.log(radiusScale(diff))
 
 					//if (diff < MAX_LATENCY) {
 						circleTransition = circle.transition()
-								.duration(10)
+								.duration(TICK_FREQUENCY)
 								.attr("r", radiusScale(diff))
 								//.attr("fill", colorScale(diff));
 					//}
 				}
 
 
-			}, 100);
+			}, 10);
 
 			setInterval(function() {
 				beat();
