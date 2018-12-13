@@ -48,7 +48,6 @@ var svgwrapper = d3.select("#svg-wrapper")
   .attr("width", Math.floor((w/300))*300)
   .attr("height", h)
   .style("margin-left", `${side_margin/3*2}px`)
-  //.style("margin-right", side_margin);
 
 var width = 300;
 var height = 300;
@@ -60,11 +59,24 @@ const sound = new buzz.sound("./sound/heartbeat", {
 var svgs = {}
 
 for(let lang in langs) {
-  let svg = d3.select("#svg-wrapper")
+  let container = d3.select("#svg-wrapper")
+    .append("div")
+    .attr("id", 'container-' + lang)
+    .attr("onClick", " ")
+    .style("width", `${width}px`)
+    .style("height", `${height}px`)
+
+  let svg = container
     .append("svg")
     .attr("id", lang)
-    .attr("width", width)
-    .attr("height", height)
+    .style("width", `${width}px`)
+    .style("height", `${height}px`)
+
+  //container
+    //.append("label")
+    //.attr("type", "button")
+    //.attr("name", "toggle")
+    //.attr("value", "Toggle")
 
   langs[lang].push(svg);
 }
@@ -149,12 +161,22 @@ class LangListener {
       }
     }, 3000);
 
-    $('#' + self.language).mouseout(function (event) {
+    //$('div#svg-wrapper').on('dblclick', '#container-' + self.language, function (event) {
+      //self.mute = true;
+    //})
+
+    //$('div#svg-wrapper').on('click', '#container-' + self.language, function (event) {
+      //self.mute = false;
+      //self.beat()
+    //})
+
+    $('#container-' + self.language).on('dblclick', function (event) {
       self.mute = true;
     })
 
-    $('#' + self.language).mouseover(function (event) {
+    $('#container-' + self.language).on('click', function (event) {
       self.mute = false;
+      self.beat()
     })
 
     this.socket.addEventListener('open', function (event) {
