@@ -8,13 +8,21 @@
 div {
   text-align: center;
 	margin: auto;
+	float: left;
+  position: relative;
+  cursor: pointer;
   /*margin-left: 80px;*/
 }
 
 svg {
 	margin: 5px;
+	margin-top: 0px;
 	float: left;
   display: inline-block;
   text-align: center;
+  cursor: pointer;
 }
 
+input {
+  position: relative;
+}

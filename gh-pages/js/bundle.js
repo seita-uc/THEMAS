@@ -52,8 +52,7 @@ var langs = {
 var w = window.innerWidth;
 var h = window.innerHeight;
 var side_margin = Math.floor(w % 300 / 2);
-var svgwrapper = d3.select("#svg-wrapper").attr("width", Math.floor(w / 300) * 300).attr("height", h).style("margin-left", "".concat(side_margin / 3 * 2, "px")); //.style("margin-right", side_margin);
-
+var svgwrapper = d3.select("#svg-wrapper").attr("width", Math.floor(w / 300) * 300).attr("height", h).style("margin-left", "".concat(side_margin / 3 * 2, "px"));
 var width = 300;
 var height = 300;
 var sound = new buzz.sound("./sound/heartbeat", {
@@ -62,7 +61,13 @@ var sound = new buzz.sound("./sound/heartbeat", {
 var svgs = {};
 
 for (var lang in langs) {
-  var svg = d3.select("#svg-wrapper").append("svg").attr("id", lang).attr("width", width).attr("height", height);
+  var container = d3.select("#svg-wrapper").append("div").attr("id", 'container-' + lang).attr("onClick", " ").style("width", "".concat(width, "px")).style("height", "".concat(height, "px"));
+  var svg = container.append("svg").attr("id", lang).style("width", "".concat(width, "px")).style("height", "".concat(height, "px")); //container
+  //.append("label")
+  //.attr("type", "button")
+  //.attr("name", "toggle")
+  //.attr("value", "Toggle")
+
   langs[lang].push(svg);
 }
 
@@ -127,12 +132,20 @@ function () {
 
           self.heart.transition().duration(1000).attr('fill', d3.interpolateLab(self.color, "black")(self.colorScale)).style('opacity', opacity);
         }
-      }, 3000);
-      $('#' + self.language).mouseout(function (event) {
+      }, 3000); //$('div#svg-wrapper').on('dblclick', '#container-' + self.language, function (event) {
+      //self.mute = true;
+      //})
+      //$('div#svg-wrapper').on('click', '#container-' + self.language, function (event) {
+      //self.mute = false;
+      //self.beat()
+      //})
+
+      $('#container-' + self.language).on('dblclick', function (event) {
         self.mute = true;
       });
-      $('#' + self.language).mouseover(function (event) {
+      $('#container-' + self.language).on('click', function (event) {
         self.mute = false;
+        self.beat();
       });
       this.socket.addEventListener('open', function (event) {
         self.socket.send('Hello Server!');
