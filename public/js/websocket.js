@@ -1,4 +1,4 @@
-const langs = {
+export var langs = {
   'en': ['English', 'ws://wikimon.hatnote.com:9000'],
   'de': ['German', 'ws://wikimon.hatnote.com:9010'],
   'ru': ['Russian', 'ws://wikimon.hatnote.com:9020'],
@@ -40,6 +40,7 @@ const langs = {
   'et': ['Estonian', 'ws://wikimon.hatnote.com:9380'],
   'wikidata': ['Wikidata' , 'ws://wikimon.hatnote.com:9220']
 }
+
 var modificationCount = {}
 for(let lang in langs) {
   Object.defineProperty(modificationCount, lang, {
@@ -47,6 +48,8 @@ for(let lang in langs) {
     writable: true
   });
 }
+
+export var modCount = modificationCount
 
 export function subscribe(lang, count, action) {
   const socket = new WebSocket(langs[lang][1]);
@@ -56,6 +59,8 @@ export function subscribe(lang, count, action) {
   });
 
   socket.addEventListener('message', function (event) {
+    //console.log('Message from server in ' + lang + ': ' + event.data);
+    count[lang]++
     action()
   });
 }
