@@ -73,13 +73,96 @@ for(let lang in langs) {
     .style("height", `${height}px`)
 
   //container
-    //.append("label")
-    //.attr("type", "button")
-    //.attr("name", "toggle")
-    //.attr("value", "Toggle")
+  //.append("label")
+  //.attr("type", "button")
+  //.attr("name", "toggle")
+  //.attr("value", "Toggle")
 
   langs[lang].push(svg);
 }
+
+//var now = new Date(),
+  //fromDate = new Date(now.getTime() - 5 * 1000);
+
+//var x = d3.scaleTime()
+  //.domain([fromDate, new Date(now.getTime())])
+  //.range([0, 100]),
+  //y = d3.scaleLinear()
+  //.domain([-10, 10])
+  //.range([100, 0]);
+
+//var line = d3.line()
+  //.x(function(d) {
+    //return x(d.date);
+  //})
+  //.y(function(d) {
+    //return y(d.value);
+  //})
+
+//var data = [];
+//var BEAT_VALUES = [0, 0, 3, -4, 10, -7, 3, 0, 0];
+//for (var i = 1; i < BEAT_VALUES.length; i++) {
+  //data.push({
+    //date: new Date(now.getTime() + i * 5),
+    //value: BEAT_VALUES[i]
+  //});
+//}
+
+//var svg = d3.select('#svg-wrapper').append("svg")
+  //.attr("width", width)
+  //.attr("height", height)
+  //.append("g")
+  //.attr("transform", "translate(" + 10 + "," + 10 + ")");
+
+//var clip_path = svg
+  //.append("g")
+  //.attr("clip-path", "url(#clip)")
+  //.append("path")
+  //.attr("class", "line")
+
+//var transition = svg
+  //.append("path")
+  //.attr("d", line(data))
+  //.transition()
+  //.duration(100)
+  //.ease(d3.easeLinear);
+
+////var xAxis = d3.axisBottom()
+  ////.scale(x)
+  ////.ticks(d3.timeSecond.every(1))
+  ////.tickFormat(function(d) {
+    ////var seconds = d.getSeconds() === 0 ? "00" : d.getSeconds();
+    ////return seconds % 10 === 0 ? d.getMinutes() + ":" + seconds : ":" + seconds;
+  ////});
+
+////var axis = d3.select("svg").append("g")
+  ////.attr("class", "axis")
+  ////.attr("transform", "translate(0," + 100 + ")")
+  ////.call(xAxis);
+
+//(function tick() {
+  //transition = transition.each(function() {
+
+    //// update the domains
+    //now = new Date();
+    //fromDate = new Date(now.getTime() - 5 * 1000);
+    //x.domain([fromDate, new Date(now.getTime() - 100)]);
+
+    //var translateTo = x(new Date(fromDate.getTime()) - 100);
+
+    //// redraw the line
+    //svg.select(".line")
+      //.attr("d", line(data))
+      //.attr("transform", null)
+    ////     .transition()
+    ////.attr("transform", "translate(" + translateTo + ")");
+
+    //// slide the x-axis left
+    ////axis.call(xAxis);
+
+  //}).transition().on("start", tick);
+//})();
+
 
 function randomColor() {
   let colors = [

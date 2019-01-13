@@ -175,29 +175,29 @@
 					.duration(100)
 					.ease("linear");
 
-			//(function tick() {
+			(function tick() {
 
-			//	transition = transition.each(function() {
+				transition = transition.each(function() {
 
-			//		// update the domains
-			//		now = new Date();
-			//		fromDate = new Date(now.getTime() - SECONDS_SAMPLE * 1000);
-			//		x.domain([fromDate, new Date(now.getTime() - 100)]);
+					// update the domains
+					now = new Date();
+					fromDate = new Date(now.getTime() - SECONDS_SAMPLE * 1000);
+					x.domain([fromDate, new Date(now.getTime() - 100)]);
 
-			//		var translateTo = x(new Date(fromDate.getTime()) - 100);
+					var translateTo = x(new Date(fromDate.getTime()) - 100);
 
-			//		// redraw the line
-			//		svg.select(".line")
-			//				.attr("d", line(data))
-			//				.attr("transform", null)
-			//				.transition()
-			//				.attr("transform", "translate(" + translateTo + ")");
+					// redraw the line
+					svg.select(".line")
+							.attr("d", line(data))
+							.attr("transform", null)
+							.transition()
+							.attr("transform", "translate(" + translateTo + ")");
 
-			//		// slide the x-axis left
-			//		//axis.call(xAxis);
+					// slide the x-axis left
+					//axis.call(xAxis);
 
-			//	}).transition().each("start", tick);
-			//})();
+				}).transition().each("start", tick);
+			})();
 
       //横線を描いている
       //心臓の動き
