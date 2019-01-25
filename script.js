@@ -47,7 +47,7 @@ let side_margin = Math.floor((w%300)/2)
 var svgwrapper = d3.select("#svg-wrapper")
   .attr("width", Math.floor((w/300))*300)
   .attr("height", h)
-  .style("margin-left", `${side_margin/3*2}px`)
+//  .style("margin-left", `${side_margin/3*2}px`)
 
 var width = 300;
 var height = 300;
